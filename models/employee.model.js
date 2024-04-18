@@ -31,6 +31,8 @@ const employeeUserSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    label: {type: String},
+    descriptions: [],
     imageFilename: {
         type: String
     }

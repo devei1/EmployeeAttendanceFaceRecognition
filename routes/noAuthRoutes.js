@@ -20,7 +20,8 @@ const registrationStorage = multer.diskStorage({
         cb(null, 'uploads/registration/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
+        let fname= file.originalname.split('.');
+        cb(null, Date.now() + '-' + fname[0]);
     }
 });
 
@@ -30,8 +31,9 @@ const registrationUpload = multer({ storage: registrationStorage });
 
 router.post('/register',adminController.register);
 router.post('/login',adminController.login);
-router.post('/registerEmployee',registrationUpload.single('image'),employeeeController.register);
-router.post('/verifyEmployeeId',employeeeController.verifyEmployeeId)
-router.post('/attendance',upload.single('image'),attendenceController.submitAttendance);
+router.post('/registerEmployee',registrationUpload.array('Image', 3), employeeeController.register);
+router.post('/verifyEmployeeId', employeeeController.verifyEmployeeId)
+// router.post('/attendance',upload.single('image'),attendenceController.submitAttendance);
+router.post('/attendance', registrationUpload.single('image'), employeeeController.isValidUser);
 
 module.exports = router
